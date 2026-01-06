@@ -1,0 +1,61 @@
+; This program draws Indian standard medium section beam - ISMB 600
+(vmon)
+(defun dtr(x) (* x (/ pi 180.0)))
+(defun rtd(x) (* x (/ 180.0 pi)))
+(defun myerror (s)
+   (if (/= s "Function cancelled")   ; If an error (such as CTRL-C) occurs
+      (princ (strcat "\nError: " s)) ; while this command is active...
+   )
+   (setq s nil)
+   (setq *error* olderr)             ; Restore old *error* handler
+   (princ)
+)
+(defun c:600i (/ cmd blp pbx apr oang p1 p2 p3 p4 p5 p6 p7 p8 p9 p10 p11 p12
+				p13 p14 p15 p16 p17 p18 p19 p20 p21)
+          (SETVAR  "cmdecho" 0)
+	      (setq olderr  *error*             ; Initialize variables
+                *error* myerror )
+		(setq cmd (getvar "cmdecho")
+    	      blp (getvar "blipmode")
+			  pbx (getvar "pickbox")
+          	  apr (getvar "aperture")
+			  osm (getvar "osmode"))
+     (COMMAND  "pickbox" 3  "aperture" 4  "osmode" 32)
+	(setq 	p1 (getpoint "\n Pick Start point of the GIRDER  :")			
+          oang (getangle "\n     Enter Orientation ANGLE <0> : ")
+    )      
+		  (if (= oang nul) (setq oang 0))	  
+    (COMMAND "blipmode" "off"  "pickbox" 0  "aperture" 1)	
+	   (setq p2 (polar p1 oang 105.0)
+	   		 p3 (polar p2 (+ oang (dtr 90)) 5.1504)
+			 p4 (polar p3 (+ oang (dtr 131)) 13.1212)
+			 p5 (polar p4 (+ oang (dtr 172)) 73.8943)
+			 p6 (polar p5 (+ oang (dtr 131)) 26.2424)
+			 p7 (polar p6 (+ oang (dtr 90)) 509.715)
+			 p8 (polar p7 (+ oang (dtr 49)) 26.2424)
+			 p9 (polar p8 (+ oang (dtr 8)) 73.8943)
+			p10 (polar p3 (+ oang (dtr 90)) 589.6992)
+			p11 (polar p10 (+ oang (dtr 90)) 5.1504)
+			p12 (polar p11 (+ oang (dtr 180)) 210.0)
+			p13 (polar p12 (+ oang (dtr 270)) 5.1504)
+			p14 (polar p13 (+ oang (dtr 311)) 13.1212)
+			p15 (polar p14 (+ oang (dtr 352)) 73.8943)
+			p16 (polar p15 (+ oang (dtr 311)) 26.2424)
+			p17 (polar p16 (+ oang (dtr 270)) 509.715)
+			p18 (polar p17 (+ oang (dtr 229)) 26.2424)
+			p19 (polar p18 (+ oang (dtr 188)) 73.8943)
+			p20 (polar p13 (+ oang (dtr 270)) 589.6992)
+			p21 (polar p1 (+ oang (dtr 180)) 105.0)
+		)
+	(command "pline" p2 p3 "arc" p4 "l" p5 "a" p6 "l" p7 "a" p8 "l" p9
+	         "a" p10 "l" p11 p12 p13 "a" p14 "l" p15 "a" p16 "l" p17 "a"
+			 p18 "l" p19 "a" p20 "l" p21 "c"
+	  "blipmode" "on"  "pickbox" pbx "aperture" apr "osmode" osm   
+	  "cmdecho" cmd)
+   (setq *error* olderr)             ; Restore old *error* handler
+   (princ)(print)(print) 
+   (prompt " .... Drawn .... ")	
+)			  		
+(graphscr)
+(prompt " GIRDER ISMB 600 LOADED ")
+(princ)

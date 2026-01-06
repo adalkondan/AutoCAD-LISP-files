@@ -1,0 +1,22 @@
+;TO SET APPERTURE SIZE AND PICKBOX.
+;----------------------------------
+(DEFUN C:APP(/ app1 pbx1 app pbx)
+ (setq app1(getvar "aperture")
+       pbx1(getvar "pickbox"))
+ (princ "\nApperture <") (princ app1)     
+ (setq app(getint "> : "))
+ (princ "\n Pick Box <") (princ pbx1)
+ (setq pbx(getint "> : "))
+ (if app (setq app app)
+         (setq app app1))
+ (if pbx (setq pbx pbx)
+         (setq pbx pbx1))       
+ (setvar "aperture" app)
+ (setvar "pickbox" pbx)
+ (princ)
+)		
+(defun dr(x)
+    (* pi (/ x 180.0)))
+(defun rd(x)
+    (* 180.0 (/ x pi)))
+(princ)	

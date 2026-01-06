@@ -1,0 +1,27 @@
+;This spl layer setup prg is created for wil -  basavaraju June-99.
+;-----------------------------------------------------------
+(DEFUN LAYT (lanam clrno lintyp)
+   (setq ts (tblsearch "LAYER" LANAM))
+   (if (null ts) 
+      (PROGN 
+        (prompt "..Creating new layer..") 
+        (PRINC LANAM) 
+        (PRINC "\n")
+        (COMMAND "LAYER" "M" LANAM "C" CLRNO LANAM "lt" lintyp lanam "" )
+      )
+   )
+)
+;--------------------------
+(DEFUN C:strLAY()
+(setvar "cmdecho" 0)
+(LAYT "ZScl" 252 "center")
+(LAYT "ZShl" 92 "hidden")
+(LAYT "ZSpl" 32 "phantom")
+(LAYT "ZSsm" 110 "continuous")
+(LAYT "ZSxd" 150 "continuous")
+(LAYT "ZSxt" 130 "continuous")
+ (setvar "clayer" "0")
+ (setvar "cmdecho" 1)
+ (princ "\n--Structural Layers ready.")
+ (princ)
+)
